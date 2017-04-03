@@ -1,17 +1,22 @@
-﻿生成启动时间为 2017/3/31 16:14:37。
+﻿生成启动时间为 2017/4/3 11:01:21。
      1>项目“E:\Myprog\NewKe\NewKe\NewKe.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_DEPRECATE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\NewKe.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NewKe.cpp
          NewKe.cpp
-     1>e:\myprog\newke\newke\dynamicprogramming.h(23): warning C4018: “<”: 有符号/无符号不匹配
      1>e:\myprog\newke\newke\dynamicprogramming.h(24): warning C4018: “<”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(26): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(25): warning C4018: “<”: 有符号/无符号不匹配
      1>e:\myprog\newke\newke\dynamicprogramming.h(27): warning C4018: “<”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(38): warning C4018: “<=”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(41): warning C4018: “<”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(43): warning C4018: “<”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(44): warning C4018: “<=”: 有符号/无符号不匹配
-     1>e:\myprog\newke\newke\dynamicprogramming.h(49): warning C4018: “>”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(28): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(41): warning C4018: “<=”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(44): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(46): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(47): warning C4018: “<=”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(53): warning C4018: “>”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(67): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(70): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(71): warning C4018: “<”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\dynamicprogramming.h(73): warning C4018: “>=”: 有符号/无符号不匹配
+     1>e:\myprog\newke\newke\newke.cpp(41): warning C4018: “<”: 有符号/无符号不匹配
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Myprog\NewKe\Debug\NewKe.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Myprog\NewKe\Debug\NewKe.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Myprog\NewKe\Debug\NewKe.lib" /MACHINE:X86 Debug\NewKe.obj
          Debug\stdafx.obj
@@ -21,4 +26,4 @@
 
 生成成功。
 
-已用时间 00:00:01.26
+已用时间 00:00:00.76

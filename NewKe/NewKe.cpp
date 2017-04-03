@@ -6,20 +6,187 @@
 
 #include<regex>
 
-#include<iostream>
+#include <map>
+#include <string.h>
 #include<vector>
-#include<string>
-//#include<algorithm>
-#include<map>
-#include<math.h>
+#include <algorithm>
+#include<iostream>
 using namespace std;
-////////////////////////牛客网-华为 第10字符串排序  ////////////////////////////////
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/////字符串排序 by WillWu
+int main()
+{
+	string s;
+	vector<char> tempChar;
+	while (getline(cin, s))
+	{
+		tempChar.clear();
+		int len = s.size();
+		for (int j = 0; j<26; j++)
+		{
+			for (int i = 0; i<len; i++)
+			{
+				if (s[i] - 'a' == j || s[i] - 'A' == j)
+				{
+					tempChar.push_back(s[i]);
+				}
+			}
+		}
+		for (int i = 0, k = 0; (i<len) && k<tempChar.size(); i++)
+		{
+			if ((s[i] >= 'a'&&s[i] <= 'z') || (s[i] >= 'A'&&s[i] <= 'Z'))
+				s[i] = tempChar[k++];
+		}
+		cout << s << endl;
+	}
+	return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+
+/*
 int main(){
-	DynamicProgramming DP;
-	DP.run();
-    
+	int In, Rn;
+	while (cin >> In)
+	{
+		vector<int> I(In);
+		for (size_t i = 0; i < In; i++)
+			cin >> I[i];
+		cin >> Rn;
+		map<int, vector<pair<int, int>>> R;
+		int tmp;
+		for (size_t i = 0; i < Rn; i++)
+		{
+			cin >> tmp;
+			R[tmp] = {};
+		}
+		string str;
+		tmp = 0;
+		for (auto r : R)
+		{
+			for (size_t i = 0; i < In; i++)
+			{
+				str = to_string(I[i]);
+				if (str.find(to_string(r.first)) != -1){
+					R[r.first].push_back({ i, I[i] });
+				}
+			}
+			tmp += (R[r.first].size() * 2);
+			if (R[r.first].size()) tmp += 2;
+		}
+		cout << tmp ;
+		//auto rend = R.end(); (*R.end()).second.clear();
+		for (auto r = R.begin(); r != R.end();r++)
+		{
+			if ((*r).second.size())
+				cout << " " << (*r).first  << " " <<(*r).second.size();
+			for (size_t i = 0; i < (*r).second.size(); i++)
+				cout<< " "  << (*r).second[i].first << " "<< (*r).second[i].second ;
+		}
+		cout << endl;
+	}
+}*/
+////////////////////////////////////////////////////////////////////////////////
+
+int str_match(char * s,char * t){
+	// time complexity O(n^2) 的字符串匹配算法，在s 中找t 第一次出现的位置
+	// 匹配成功返回第一次出现的位置
+	int slen = strlen(s),tlen=strlen(t);
+	for (int i = 0,j,ii; i<slen; i++)
+	{
+		for (j = 0, ii = i; s[ii] == t[j] && t[j] != '\0'; ++ii, j++);
+		if (j == tlen) return i;
+	}
+	return -1;
+}
+int main1(){
+	cout << str_match("vgsgbdrtjgndtrkihn","n");
+	return 0;
+}
+////////////////////////牛客网-华为 第10实现删除字符串中出现次数最少的字符，若多个字符出现次数一样，则都删除。输出删除这些单词后的字符串，字符串中其它字符保持原来的顺序。  ////////////////////////////////
+//  time complexity : O(n) space :O(n)
+/*
+int main(){
+	string str;
+	while (cin>>str)
+	{ 
+		map<char, int>  stat;
+		int min=INT_MAX;
+ 		for (size_t i = 0; i < str.length(); i++)
+		{
+			if (stat.find(str[i]) != stat.end()){
+				stat[str[i]] += 1;
+			}else
+			{
+				stat[str[i]] = 1;
+			}
+		}
+		for (auto s = stat.begin(); s != stat.end(); ++s){
+			if ((*s).second<min) min = (*s).second;
+		}
+		for (auto s = stat.begin(); s != stat.end(); ++s){
+			if ((*s).second > min){
+				(*s).second = -1;
+			}
+		}
+		string newStr;
+		for (size_t i = 0; i < str.length(); i++)
+		{
+			if (stat[str[i]] == -1) newStr.push_back(str[i]);
+
+		}
+		cout << newStr<<endl;
+
+	}
+}*/
+
+////////////////////////牛客网-华为 第10字符串排序  ////////////////////////////////
+/*
+int exchange(int n){
+	if (n == 1) return 0;
+	if (n == 2) return 1;
+	return n / 3 + exchange(n % 3 + n / 3);
 
 }
+int main(){
+	int n,x,tmp;
+	while (cin>>n)
+	{   
+	
+		cout << exchange(n) << endl;
+
+	}
+ 
+}*/
+
+
+////////////////////////牛客网-华为 第10字符串排序  ////////////////////////////////
+/*
+int main(){
+	string str;
+	string dict = "22233344455566677778889999";
+	while (cin>>str)
+	{   
+		string pwd = str;
+		for (size_t i = 0; i < str.length(); i++)
+		{
+			if (str[i] >= 'A'&& str[i] <= 'Z'){
+				pwd[i] = (str[i] + 32 + 1);
+				if (pwd[i]>'z') pwd[i] = 'a';
+
+			}else if (str[i] >= 'a' && str[i] <= 'z')
+			{
+				pwd[i] = dict[str[i] - 'a'];
+			}
+			
+		}
+		cout << pwd;
+	} 
+}*/
+
 int main_shopping_bill(){
 	int v[61]; int p[61]; int q[61];
 	int dp[61][3200] = { 0 };
@@ -565,7 +732,7 @@ void operate_2_2(vector<vector<int>> &M, int x, int y){
 void operate_2_3(vector<vector<int>> &M, int x, int y){
 	//2 3 表示：90度，逆时针，翻转9个数
 }
-int main1(){
+int main2(){
 #define N 5
 	vector<vector<int>> M(N,vector<int>(N));
 	int p, q, x, y;
