@@ -128,6 +128,34 @@ void chorus(){
 		cout << n - max + 1 << endl;
 	}
 }
+//////////////////////////////////////////////////////////
+/*
+  动态4 ：最长公共子串，较简单
+
+int LongestPublicSubstr(){
+	string str1, str2;
+	while (getline(cin, str1))
+	{
+		getline(cin, str2);//必须用这个getline ,否则有空格时会出问题
+		vector<vector<int>> opt(str1.length() + 1,
+			vector<int>(str2.length() + 1, 0));
+		int i, j, max = 0;
+		for (i = 1; i < str1.length() + 1; i++)
+		{
+			for (j = 1; j < str2.length() + 1; j++)
+			{
+				// 关键代码 
+				if (str1[i - 1] == str2[j - 1] && opt[i][j] < opt[i - 1][j - 1] + 1)
+				{
+					opt[i][j] = opt[i - 1][j - 1] + 1;
+					if (opt[i][j]>max) max = opt[i][j];
+				}
+			}
+		}
+		cout << max << endl;
+	}
+	return 0;
+}*/
 
 
 /////////////////////////////////////////////////////////

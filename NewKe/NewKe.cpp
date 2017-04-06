@@ -11,13 +11,828 @@
 #include<vector>
 #include <algorithm>
 #include<iostream>
+#include<stack>
+#include<queue>
+using namespace std;
+#include <iostream>
+#include<vector>
+#include<string>
+#include<map>
+#include<stdlib.h>
+using namespace std;
+////////////////////////////////////////////////////////////////////////////
+// NeKe.cpp : 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include<vector>
+#include<string>
+#include<map>
+#include<algorithm>
 using namespace std;
 
 
+//************************************************************
+//-----------------------最小年龄的3个职工--------------------
+int main(){
+	int n;
+	while (cin >> n){
+		vector<vector<string> > inf(n, vector<string>(3));
+		for (int i = 0; i<n; i++){
+			for (int j = 0; j < 3; j++)
+				cin >> inf[i][j];
+		}
+		sort(inf.begin(), inf.end(), [](const vector<string> &e1,vector<string> &e2)->int{});
+		//
+
+
+
+		for (int k = 3; k<n; k++){
+			if (inf[k][2] <= max(inf[0][2], max(inf[1][2], inf[2][2]))){
+				if (max(inf[0][2], max(inf[1][2], inf[2][2])) == inf[0][2])
+					swap(inf[0], inf[k]);
+				else if (max(inf[0][2], max(inf[1][2], inf[2][2])) == inf[1][2])
+					swap(inf[1], inf[k]);
+				else swap(inf[2], inf[k]);
+			}
+		}
+		for (int s = 0; s < 2; s++){
+			if (inf[s][2]>inf[s + 1][2]) swap(inf[s], inf[s + 1]);
+			else if (inf[s][2] == inf[s + 1][2] && inf[s][0] > inf[s + 1][0])swap(inf[s], inf[s + 1]);
+		}
+		if (inf[0][2]>inf[1][2]) swap(inf[0], inf[1]);
+		else if (inf[0][2] == inf[1][2] && inf[0][0] > inf[1][0]) swap(inf[0], inf[1]);
+		for (int i = 0; i<3; i++){
+			for (int j = 0; j < 3; j++)cout << inf[i][j] << ' ';
+			cout << endl;
+		}
+	}
+}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+class Solution {
+public:
+	typedef struct TreeNode{
+		int val;
+		TreeNode * left, *right;
+		TreeNode(int x) : val(x), left(NULL), right(NULL) {};
+
+	};
+	TreeNode * root=NULL;
+	bool VerifySquenceOfBST(vector<int> sequence) {
+
+		for (int i = 0; i<sequence.size(); ++i){
+			Insert2Tree(root, sequence[i]);
+		}
+		vector<int> PostOrder;
+		post(root, PostOrder);
+		for (int i = 0; i<sequence.size(); ++i){
+			if (PostOrder[i] != sequence[i]){
+				return false;
+			}
+		}
+		deleteTree(root);
+		return true;
+
+	}
+	void PostInsert(TreeNode * root,int node){
+	    
+
+
+	}
+
+	void Insert2Tree(TreeNode *root, int node){
+		if (root){
+
+			if (node<root->val){
+				if (root->left == NULL) root->left = new TreeNode(node);
+				else  Insert2Tree(root->left, node);
+			}
+			else{
+				if (root->right == NULL) root->right = new TreeNode(node);
+				else  Insert2Tree(root->right, node);
+			}
+		}
+		else{
+			this->root = new TreeNode(node);
+		}
+	}
+	void deleteTree(TreeNode * root){
+		if (root){
+			deleteTree(root->left);
+			deleteTree(root->right);
+			delete root;
+		}
+	}
+	void post(TreeNode * root, vector<int> &PostOrder){
+		if (root){
+			post(root->left, PostOrder);
+			post(root->right, PostOrder);
+			PostOrder.push_back(root->val);
+
+		}
+	}
+};
+int main999(){
+	Solution s;
+	s.VerifySquenceOfBST({ 4, 8, 6, 12, 16, 14, 10 });
+
+	return 0;
+}
+
+
+////////////////////二叉树层序遍历///////////////////////////////////////////
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+		val(x), left(NULL), right(NULL) {
+	}
+};
+class Solution {
+public:
+	vector<int> PrintFromTopToBottom(TreeNode* root) {
+		vector<int> result;
+		if (!root)
+			return result;
+
+		deque<TreeNode *> dequeTN;
+		dequeTN.push_back(root);
+
+		while (dequeTN.size())
+		{
+			TreeNode* pNode = dequeTN.front();
+			dequeTN.pop_front();
+
+			result.push_back(pNode->val);
+
+			if (pNode->left)
+				dequeTN.push_back(pNode->left);
+			if (pNode->right)
+				dequeTN.push_back(pNode->right);
+		}
+		return result;
+	}
+};*/
+
+////////////////////////////含最小值函数的栈//////////////////////////////////////
+/*定义栈的数据结构，请在该类型中实现一个能够得到栈最小元素的min函数。
+// 设置一个正常的栈 stk，用于正常的压栈，弹出，
+// 再设置一个存放最小值的栈MIN，栈顶始终保持 stk 栈顶到栈底的最小值，
+// 有元素进栈时，先将其压入stk, 这个元素如果小于MIN 栈顶，则将其压入MIN,否则复制 MIN 栈顶压入MIN
+// 有元素出栈时，stk 出栈，MIN也出栈，二者保持同步 
+// MIN[top]=min{ MIN.top(),value }=min{ stk[1...top] }
+
+class Solution {
+public:
+	stack<int> stk;
+	stack<int> MIN;
+	void push(int value) {
+		if (stk.empty()){
+			stk.push(value);
+			MIN.push(value);
+		}
+		else{
+			stk.push(value);
+			if (value > MIN.top()){
+				MIN.push(MIN.top());
+
+			}
+			else{
+				MIN.push(value);
+			}
+		}
+	}
+	void pop() {
+		stk.pop();
+		MIN.pop();
+	}
+	int top() {
+		return stk.top();
+	}
+	int min() {
+
+		return MIN.top();
+	}
+};*/
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+/* 
+  输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。
+  假设压入栈的所有数字均不相等。
+  分析：每压栈一个元素，就检查出栈序列，看是否能弹出一些元素，是的话就弹出一些元素，直到不能弹出
+        为止，（原因在于，一旦某个元素压栈，则他之前压栈的元素只能反序出栈），
+		直到所有元素（pushV）都入栈，如果栈不空的话，继续上次popV 的位置弹栈，一旦popV[j] 与栈顶不匹配
+		，则返回false，直到j超出范围或者栈空，
+*/
+/*
+class Solution {
+public:
+	bool IsPopOrder(vector<int> pushV, vector<int> popV) {
+		stack<int> stack1;
+		int i, j, tmp;
+		for (i = 0, j = 0; i<pushV.size() && j<popV.size(); ++i){
+			stack1.push(pushV[i]);
+			for (; j < popV.size()&&stack1.top() == popV[j]; stack1.pop(), ++j);
+			//出栈序列和栈顶匹配的话就将弹栈，直到出栈序列不能匹配为止，
+		}
+		while (!stack1.empty()){
+			tmp = stack1.top();
+			if (tmp == popV[j]){
+				stack1.pop(); j++;
+			}
+			else{
+				return false;
+			}
+		}
+		if (stack1.empty()) return true;
+		else return false;
+	}
+};
+int main(){
+	Solution s;
+	bool res=s.IsPopOrder({1, 2, 3, 4, 5}, { 4,5,3,2,1 });
+	return 0;
+}*/
+
+//////////////////////浮点的整数次方 //////////////////////////////////
+/*
+struct ListNode {
+int val;
+struct ListNode *next;
+ListNode(int x) :
+val(x), next(NULL) {
+}
+};
+class Solution {
+public:
+	//============================================
+	ListNode* FindKthToTail(ListNode* pListHead, unsigned int &k) {
+		if (pListHead){
+			ListNode *p = FindKthToTail(pListHead->next, k);
+			k--;
+			if (p)  return p;
+			if (k == 0) return pListHead;
+			return NULL;
+		}
+		else{
+			return pListHead;
+		}
+	}
+	//====================递归版本=================
+	ListNode * newHead;
+	int depth = 0;
+	ListNode* ReverseList(ListNode* pHead){
+		if (pHead){//如果链表为空
+			if (pHead->next){//如果没到尾节点
+				depth++;
+				ListNode * prior = ReverseList(pHead->next);
+				if (prior)  prior->next = pHead;
+				if ((--depth) == 0) { 
+					pHead->next = NULL;
+					return newHead; 
+				}
+				return pHead;
+			}else{  // 如果到了尾节点，则给新的头结点赋值
+				newHead = pHead;
+				return pHead;
+			}
+		}else{//如果链表为空
+			return pHead;
+		}
+	}
+  //=====================迭代版本================
+	ListNode* ReverseList_iter(ListNode* pHead) {
+		if (!pHead) return pHead;
+		ListNode* p = pHead->next, *q = pHead, *tmp = q;
+		q->next = NULL;
+		while (p){
+			tmp = p->next;
+			p->next = q;
+			q = p;
+			p = tmp;
+		}
+		return q;
+	}
+	ListNode * CreateList( vector<int> array){
+		ListNode * pHead = new ListNode(array[0]);
+		ListNode * p = pHead;
+		for (size_t i = 1; i < array.size(); i++)
+		{
+			p->next = new ListNode( array[i] );
+			p = p->next;
+
+		}
+		return pHead;
+	}
+
+};
+int main(){
+	Solution s;
+	ListNode * head=s.CreateList({1,2,3,4,5});
+	vector<int> t;
+	
+	ListNode * rp=s.ReverseList(head);
+	return 0;
+}*/
+
+
+
+//////////////////////浮点的整数次方 //////////////////////////////////
+/*  主要用位操作，矩阵的N次方可以在log(N) 复杂度下完成，注意此处N是幂次 
+double Power(double base, int exponent) {
+
+	int _exponent = abs(exponent);
+	double res = 1, tmp = base;
+	int test_bit = 1;
+	for (; test_bit != 0; test_bit <<= 1){
+		if (test_bit& _exponent){
+			res *= tmp;
+		}
+		tmp *= tmp;
+	}
+	if (exponent>0)
+		return res;
+	else return 1 / res;
+
+}
+int main(){
+	Power(2, -3);
+
+	return 0;
+}
+*/
+
+
+//////////////////////////计算变量二进制 1 的个数////////////////////
+/*
+一个很基本的想法是，我们先判断整数的最右边一位是不是1。
+接着把整数右移一位，原来处于右边第二位的数字现在被移到第一位了，
+再判断是不是1。这样每次移动一位，直到这个整数变成0为止。现在的问题
+变成怎样判断一个整数的最右边一位是不是1了。很简单，如果它和整数1作与运算。
+由于1除了最右边一位以外，其他所有位都为0。因此如果与运算的结果为1，
+表示整数的最右边一位是1，否则是0。
+
+这个思路当输入i是正数时没有问题，但当输入的i是一个负数时，
+不但不能得到正确的1的个数，还将导致死循环。以负数0x80000000为例，
+右移一位的时候，并不是简单地把最高位的1移到第二位变成0x40000000，
+而是0xC0000000。这是因为移位前是个负数，仍然要保证移位后是个负数，
+因此移位后的最高位会设为1。如果一直做右移运算，最终这个数字就会变
+成0xFFFFFFFF而陷入死循环。
+
+为了避免死循环，我们可以不右移输入的数字i。首先i和1做与运算，
+判断i的最低位是不是为1。接着把1左移一位得到2，再和i做与运算，
+就能判断i的次高位是不是1……这样反复左移，每次都能判断i的其中一位是不是1。
+基于此，我们得到如下代码：
+see:http://blog.csdn.net/wangjun_1218/article/details/4464129
+*/
+/*
+int  NumberOf1(int number) {
+	int test_bit = 0x00000001;
+	int num=0;
+	for (; test_bit != 0; test_bit <<= 1){
+		if ((test_bit & number)){
+			++num;
+		}
+	}
+	return num;
+}
+int main(){
+
+	int res=NumberOf1(-16);
+	return 0;
+
+}*/
+
+/////////////////////////////剑指offer 二叉树层序遍历 /////////////////////
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+		val(x), left(NULL), right(NULL) {
+	}
+};
+
+class Solution {
+public:
+
+	vector<vector<int> > Print(TreeNode* pRoot) {
+		vector<vector<int> > result;
+		queue <TreeNode*> layer;
+		TreeNode* tmp;
+		vector<int> layer_vec;
+		vector<TreeNode *> vec;
+		layer.push(pRoot);
+		while (!layer.empty()){
+           
+			while (!layer.empty()){ //把同一层的所有节点都拉出来
+				vec.push_back(layer.front());
+				layer.pop();
+			}
+			for (int i = 0; i<vec.size(); ++i){
+				if (vec[i]){
+					layer_vec.push_back(vec[i]->val);
+					if (vec[i]->left) layer.push(vec[i]->left);
+					if (vec[i]->right)layer.push(vec[i]->right);
+				}
+			
+			}
+			if (layer_vec.size()>0) result.push_back(layer_vec);
+			layer_vec.clear();
+
+			vec.clear();
+
+		}
+		return result;
+
+	}
+
+};*/
+
+
+
+
+/////////////////////////////剑指offer 旋转数组的最小元素/////////////////////
+/*
+     初始化一个最小min，如果找到更小的，更新min,用二分法      
+
+class Solution {
+public:
+	int minNumberInRotateArray(vector<int> rotateArray) {
+
+		if (rotateArray.size() == 0) return 0;
+		int a = 0, b = rotateArray.size() - 1, mid, min = rotateArray[0];
+		while (a<=b){
+			mid = (a + b) / 2;
+			if (min <rotateArray[mid]){
+				a = mid + 1;
+			}
+			else if (min >rotateArray[mid]) {
+				b = mid - 1;
+				min = rotateArray[mid];
+			}
+			else{
+				a = mid + 1;
+			}
+		}
+		return min;
+	}
+};
+
+int main(){
+	vector<int> nums = {3,4,5,1,2};
+
+	Solution S;
+	int a=S.minNumberInRotateArray(nums);
+	
+	return 0;
+}*/
+
+/////////////////////////////剑指offer 双栈模拟队/////////////////////
+/*
+   双栈模拟队
+    1 入队时：stack1 用来存队尾段，如果stack2 空了，则把stack1 所有元素出栈，压入stack2,等待出队
+      然后把新的元素压入stack1
+	2 出队时：如果stack2 为空，则把stack1 元素弹出并压入stack2,然后从stack2 弹出栈顶元素即队头
+
+
+
+class Solution
+{
+public:
+	void push(int node) {
+		if (stack2.empty()){  
+	    	while (!stack1.empty() ){
+			   stack2.push(stack1.top());
+			   stack1.pop();
+		    }
+		}
+		stack1.push(node);
+	}
+
+	int pop() {
+		if (stack2.empty()){
+			while (!stack1.empty()){
+				stack2.push(stack1.top());
+				stack1.pop();
+			} 
+		}
+		int ret = stack2.top();
+		stack2.pop();
+		return ret;
+	}
+private:
+	stack<int> stack1;
+	stack<int> stack2;
+};*/
+
+
+
+////////////////////////////剑指offer — build binary tree//////////////////
+ /*struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ };
+class Solution {
+public:
+	TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
+		if (pre.size()<1) return NULL;
+		if (vin.size()<1) return NULL;
+
+		if (pre.size() == 1) return new TreeNode(pre[0]);
+		if (vin.size() == 1) return new TreeNode(vin[0]);
+
+		int root_val = pre[0];
+		vector<int> in_left, in_right, pre_left, pre_right;
+		int i, flag = -1;
+		for (i = 0; i<vin.size(); ++i){
+			if (root_val == vin[i]){
+				flag = i;
+			}
+			else{
+	           if (flag == -1) in_left.push_back(vin[i]);
+			   else in_right.push_back(vin[i]);
+			}
+		}
+		for (i = 1; i <= flag; ++i){ pre_left.push_back(pre[i]); };
+		for (i = flag + 1; i<pre.size(); ++i) pre_right.push_back(pre[i]);
+
+
+		TreeNode* root = new TreeNode(root_val);
+		root->left = reConstructBinaryTree(pre_left, in_left);
+
+		root->right = reConstructBinaryTree(pre_right, in_right);
+
+		return root;
+
+	}
+};
+int main(){
+	Solution S;
+	TreeNode*  tree = S.reConstructBinaryTree({ 1, 2, 3, 4 }, { 1, 2, 3, 4 });
+
+	return 0;
+}*/
+
+/////////////////////////剑指offer 矩阵查找//////////////////////////////////
+/*class Solution {
+public:
+	bool Find(int target, vector<vector<int> > array) {
+		int mid_i,mid_j ,ai,aj,bi,bj;
+		for ( ai = 0, aj = 0,bi = array.size() - 1,bj=array[0].size()-1;ai<bi && aj<bj;)
+		{
+			mid_i = (ai + bi) / 2;
+			mid_j = (aj + bj) / 2;
+			if (target > array[mid_i][mid_j]){
+				ai = mid_i+1;
+				aj = mid_j+1;
+			}else if (target < array[mid_i][mid_j]){
+				bi = mid_i-1;
+				bj = mid_j-1;
+			}else { 
+				return true; 
+			}
+		}
+		int a = 0, b = mid_j,mid;
+		while (a<b)  
+		{   mid=(a+b)/2;
+			if (target>array[mid_i][mid]) a = mid+1;
+			else if (target < array[mid_i][mid]) b = mid - 1;
+			else return true;
+		}
+		a = 0; b = mid_i; 
+		while (a<b)
+		{
+			mid = (a + b) / 2;
+			if (target>array[mid][mid_j]) a = mid + 1;
+			else if (target < array[mid][mid_j]) b = mid - 1;
+			else return true;
+		}
+		return false;
+	}
+};
+int main(){
+	vector<vector<int>> array = {
+	    { 2, 4, 5, 8, 9, 12, 15, 18, 19, 21 },
+		{ 4, 7, 8, 10, 13, 16, 18, 20, 21, 24 },
+		{ 7, 9, 11, 12, 14, 19, 22, 24, 25, 28 },
+		{ 8, 10, 14, 17, 19, 22, 23, 27, 30, 32 },
+		{ 10, 12, 16, 20, 22, 25, 27, 30, 32, 35 },
+		{ 11, 13, 17, 23, 25, 28, 31, 32, 35, 38 },
+		{ 13, 16, 18, 24, 27, 30, 34, 36, 39, 40 },
+		{ 14, 19, 22, 26, 30, 32, 37, 39, 42, 45 },
+		{ 15, 21, 25, 29, 33, 34, 40, 43, 44, 47 },
+		{ 16, 23, 27, 32, 35, 37, 43, 45, 47, 50 } 
+	};
+	Solution s;
+
+	cout<<s.Find(5,array );
+	return 0;
+}*/
+
+
+////////////////////////////////////////////////////////////////
+int _0_1_knapsack(){
+	int x, n, m;
+	while (cin>>x>>n>>m)
+	{  
+		vector<string> items(x);
+		
+	    
+		for (size_t i = 0; i < x; i++)
+		{
+			cin>>items[i];
+		}
+	}
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////
+int classify_str(){
+	int n;
+	while (cin>>n)
+	{
+		vector<string> strs(n);
+		vector<map<char, int>> tree_group;
+		for (size_t i = 0; i < n; i++)
+		{
+			cin >> strs[i];
+
+			map<char, int> tmp;
+			for (size_t j = 0; j < strs[i].length(); j++)
+			{
+				if (tmp.find(strs[i][j]) == tmp.end()) tmp[strs[i][j]] = 0;
+				else tmp[strs[i][j]] += 1;
+				
+			}
+			int flag = 0;
+			for (size_t j = 0; j < tree_group.size(); j++)
+			{
+				if (tmp == tree_group[j]) flag = 1;
+
+			}
+			if (!flag) tree_group.push_back(tmp);
+		}
+		cout << tree_group.size() << endl;
+	}
+
+	return 0;
+}
+
+
+
+////////////////////////////////////////////////////////////////
+int check(vector<int> nums,int pos,int mult){
+	if (pos >= nums.size() - 1) {
+		if (mult == nums[pos]) return -1;
+		else return nums[pos];
+	}
+	int ret = check(nums, pos + 1, nums[pos] * mult);
+	if (ret==-1) {
+		return -1;
+	}else {
+		if (ret*nums[pos] == mult) return -1;
+		else return ret*nums[pos];
+	}
+}
+
+int banlance_num(){
+	string num;
+	while (cin>>num)
+	{
+		vector<int> nums(num.length());
+		for (size_t i = 0; i < num.length(); i++)
+			nums[i] = atoi( to_string(num[i]-'0').c_str() );
+
+		int ret=check(nums,1,nums[0]);
+		if (ret != -1) cout << "NO\n";
+		else  cout << "YES\n";
+	}
+	return 0;
+}
+
+
+
+/////////////////////////////////////////////////////////////////
+int min_Rect(){
+	int n,x_min=99999999,x_max=-99999999;
+	int y_min = 9999999, y_max = -9999999;
+	while (cin>>n)
+	{
+		vector<pair<int, int>>  coord(n);
+		for (size_t i = 0; i < n; i++)
+		{
+			cin >> coord[i].first >> coord[i].second;
+		}
+		for (size_t i = 0; i < n; i++)
+		{
+			if (coord[i].first < x_min) x_min = coord[i].first;
+			if (coord[i].first>x_max) x_max = coord[i].first;
+			if (coord[i].second < y_min) y_min = coord[i].second;
+			if (coord[i].second>y_max) y_max = coord[i].second;
+
+		}
+		cout << (x_max - x_min)*(y_max - y_min) << endl;
+  	}
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////
+bool isTrag(int a, int b, int c){
+	if (a + b > c && a + c > b && b + c > a && abs(a - b) < c && abs(a - c) < b && abs(b - c) < a) return true;
+	return false;
+}
+int Assm(){
+	int n;
+	while (cin>>n)
+	{
+		vector<int> nums(n);
+		int count = 0;
+		for (size_t i = 0; i < n; i++)
+			cin >> nums[i];
+		for (size_t i = 0; i < n; i++)
+		{
+			for (size_t j = i+1; j < n; j++)
+			{
+
+				for (size_t k = j+1; k < n; k++)
+				{
+					if (isTrag(nums[i], nums[j], nums[k])){
+						count++;
+					}
+				}
+			}
+		}
+		cout << count << endl; 
+	}
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int findInt(){
+	int a, b, x;
+	while (cin>>a>>b>>x)
+	{
+		if (a >= 0){
+			int a1 = a / x,b1=b/x;
+			if(a>0) cout << b1 - a1 << endl;
+			else   cout << b1 - a1+1 << endl;
+
+		}else
+		{
+			int p = b / x + 1;
+			int n = a / x;
+			cout << p + n << endl;
+		}
+	}
+
+	return 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+int LongestPublicSubstr1(){
+	string str1,str2;
+	while (getline(cin,str1))
+	{
+		getline(cin , str2);
+		vector<vector<int>> opt(str1.length()+1,
+			vector<int>(str2.length()+1,0));
+		int i, j,max=0;
+		for ( i = 1; i < str1.length()+1; i++)
+		{
+			for ( j = 1; j < str2.length()+1; j++)
+			{
+				if (str1[i - 1] == str2[j - 1] && opt[i][j] < opt[i - 1][j - 1] + 1)
+				{ 
+					opt[i][j] = opt[i - 1][j - 1] + 1;
+					if (opt[i][j]>max) max = opt[i][j];
+				}
+			}
+		}
+		cout << max << endl;
+	}
+	return 0;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /////字符串排序 by WillWu
+/*
 int main()
 {
 	string s;
@@ -44,7 +859,7 @@ int main()
 		cout << s << endl;
 	}
 	return 0;
-}
+}*/
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
